@@ -1,3 +1,35 @@
+//better simulation code 
+
+
+module ArrayMultiplier(
+  input [7:0] A,
+  input [7:0] B,
+  output [15:0] P
+);
+
+  // Declare partial products and final product
+  reg [7:0] pp [7:0];
+  reg [15:0] P;
+
+  // Generate partial products for each bit of A
+  generate
+    genvar i;
+    for (i = 0; i < 8; i = i + 1) begin
+      pp[i] = A[i] * B;
+    end
+  endgenerate
+
+  // Add partial products with appropriate shifts
+  always @(posedge clk) begin
+    P = 0;
+    for (i = 0; i < 8; i = i + 1) begin
+      P = P + (pp[i] << i);
+    end
+  end
+
+endmodule
+
+
 // simulation code
 
 module half_adder(input a, b, output s0, c0);
@@ -68,3 +100,4 @@ module TB;
     $stop();
   end
 endmodule
+
